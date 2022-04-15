@@ -1,24 +1,16 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
 	"net/http"
-	"net/url"
+	"strings"
 )
 
 func main() {
-	values := url.Values{
-		"query": {"Hello world"},
-	}
-	resp, err := http.Get("http://localhost:18888" + "?" + values.Encode())
+	reader := strings.NewReader("テキスト")
+	resp, err := http.Post("http://localhost:18888", "text/plain", reader)
 	if err != nil {
 		panic(err)
 	}
-	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		panic(err)
-	}
-	log.Println(string(body))
+	log.Println(resp.Status)
 }
